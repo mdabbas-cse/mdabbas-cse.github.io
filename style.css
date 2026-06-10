@@ -598,13 +598,15 @@ body.cursor-ready .mouse-glow { opacity: 1; }
 
   /* Mobile nav drawer */
   .nav {
-    position: fixed; inset: 0; background: rgba(11,15,20,0.97);
+    position: fixed; inset: 0; height: 100vh; height: 100dvh;
+    background: rgba(11,15,20,0.97);
     -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
-    display: grid; place-items: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 5.5rem 1.5rem 3rem; overflow-y: auto;
     transform: translateY(-100%); transition: transform 0.6s var(--ease); z-index: 105;
   }
   .nav.is-open { transform: translateY(0); }
-  .nav__list { flex-direction: column; gap: var(--space-md); }
+  .nav__list { flex-direction: column; align-items: center; gap: var(--space-md); margin: auto; }
   .nav__link { font-size: 1.5rem; }
   .nav-toggle { display: block; }
 

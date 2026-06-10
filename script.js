@@ -141,20 +141,37 @@
     window.addEventListener('scroll', onScroll, { passive: true });
 
     if (toggle && nav) {
-      toggle.addEventListener('click', () => {
-        const open = nav.classList.toggle('is-open');
+      const setMenu = (open) => {
+        nav.classList.toggle('is-open', open);
         toggle.classList.toggle('is-open', open);
         toggle.setAttribute('aria-expanded', String(open));
         document.body.style.overflow = open ? 'hidden' : '';
-      });
-      $$('.nav__link', nav).forEach((link) =>
-        link.addEventListener('click', () => {
-          nav.classList.remove('is-open');
-          toggle.classList.remove('is-open');
-          toggle.setAttribute('aria-expanded', 'false');
-          document.body.style.overflow = '';
-        })
+      };
+      const closeMenu = () => setMenu(false);
+
+      toggle.addEventListener('click', () =>
+        setMenu(!nav.classList.contains('is-open'))
       );
+
+      // Close on link tap
+      $$('.nav__link', nav).forEach((link) =>
+        link.addEventListener('click', closeMenu)
+      );
+
+      // Close when tapping the drawer backdrop (outside the links)
+      nav.addEventListener('click', (e) => {
+        if (e.target === nav) closeMenu();
+      });
+
+      // Close on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && nav.classList.contains('is-open')) closeMenu();
+      });
+
+      // Close if viewport grows back to desktop while open
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && nav.classList.contains('is-open')) closeMenu();
+      }, { passive: true });
     }
   }
 
