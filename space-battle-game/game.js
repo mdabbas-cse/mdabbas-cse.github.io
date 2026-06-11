@@ -160,6 +160,8 @@
       bestEl.textContent = this.best;
 
       this.keys = { left: false, right: false, fire: false };
+      this.mouseX = null;     // last known mouse X (CSS px, relative to shell)
+      this.mouseActive = false; // true while the mouse is steering the ship
       this.reset();
     }
 
@@ -286,11 +288,18 @@
       this.shootCooldown -= dt;
 
       // input -> movement
+      // Priority: keyboard/touch buttons when held, otherwise follow the mouse.
       const p = this.player;
       let dir = 0;
       if (this.keys.left) dir -= 1;
       if (this.keys.right) dir += 1;
-      p.x = clamp(p.x + dir * p.speed * dt, 0, W - p.w);
+      if (dir !== 0) {
+        this.mouseActive = false; // pressing a key takes over from the mouse
+        p.x = clamp(p.x + dir * p.speed * dt, 0, W - p.w);
+      } else if (this.mouseActive && this.mouseX != null) {
+        const target = clamp(this.mouseX - p.w / 2, 0, W - p.w);
+        p.x += (target - p.x) * Math.min(1, dt * 18); // smooth follow
+      }
       if (this.keys.fire) this.fire();
 
       // bullets
@@ -498,6 +507,16 @@
     bindHold(btnFire, () => (game.keys.fire = true), () => (game.keys.fire = false));
   }
 
+  // Mouse steers the ship left/right (desktop). Firing stays on Space.
+  function bindMouse(game) {
+    shell.addEventListener("pointermove", (e) => {
+      if (e.pointerType && e.pointerType !== "mouse") return; // ignore touch/pen
+      const rect = shell.getBoundingClientRect();
+      game.mouseX = e.clientX - rect.left;
+      game.mouseActive = true;
+    });
+  }
+
   // ============================================================
   //  MAIN LOOP
   // ============================================================
@@ -522,6 +541,7 @@
     game = new Game();
     bindKeyboard(game);
     bindTouch(game);
+    bindMouse(game);
 
     startBtn.addEventListener("click", () => game.start());
     restartBtn.addEventListener("click", () => game.start());
