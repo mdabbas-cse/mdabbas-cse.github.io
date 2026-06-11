@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#05060a" />
+  <meta name="description" content="Space Battle — a fast, mobile-friendly arcade shooter built with vanilla JavaScript." />
+  <title>Space Battle — Arcade Shooter</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="game" id="game">
+    <!-- Animated starfield -->
+    <canvas id="stars" class="stars" aria-hidden="true"></canvas>
+
+    <!-- Main game canvas -->
+    <canvas id="board" class="board" aria-label="Space Battle game board" role="img"></canvas>
+
+    <!-- HUD -->
+    <div class="hud" id="hud" aria-hidden="false">
+      <div class="hud__item">
+        <span class="hud__label">Score</span>
+        <span class="hud__value" id="score">0</span>
+      </div>
+      <div class="hud__item hud__item--center">
+        <span class="hud__label">Best</span>
+        <span class="hud__value" id="best">0</span>
+      </div>
+      <div class="hud__item hud__item--right">
+        <span class="hud__label">Lives</span>
+        <span class="hud__value hud__lives" id="lives">♥♥♥</span>
+      </div>
+    </div>
+
+    <!-- Touch controls -->
+    <div class="controls" id="controls" aria-hidden="false">
+      <button type="button" class="ctrl ctrl--move" id="btnLeft" aria-label="Move left">‹</button>
+      <button type="button" class="ctrl ctrl--fire" id="btnFire" aria-label="Fire">FIRE</button>
+      <button type="button" class="ctrl ctrl--move" id="btnRight" aria-label="Move right">›</button>
+    </div>
+
+    <!-- Start screen -->
+    <div class="overlay" id="startScreen">
+      <div class="panel">
+        <h1 class="panel__title">SPACE<span class="accent">BATTLE</span></h1>
+        <p class="panel__sub">Destroy the swarm. Survive the descent.</p>
+        <button type="button" class="panel__btn" id="startBtn">Start Game</button>
+        <ul class="panel__hint">
+          <li><strong>Desktop:</strong> ← → / A D to move · Space to fire</li>
+          <li><strong>Mobile:</strong> hold the on-screen buttons</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Game over screen -->
+    <div class="overlay overlay--hidden" id="overScreen">
+      <div class="panel">
+        <h1 class="panel__title panel__title--over">GAME<span class="accent">OVER</span></h1>
+        <p class="panel__score">Score <span id="finalScore">0</span></p>
+        <p class="panel__best">Best <span id="finalBest">0</span></p>
+        <button type="button" class="panel__btn" id="restartBtn">Play Again</button>
+        <a class="panel__back" href="../index.html">← Back to portfolio</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+
+</html>

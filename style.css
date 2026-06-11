@@ -166,6 +166,33 @@ em { font-style: normal; color: var(--text); font-weight: 600; }
 .btn--ghost { border: 1px solid var(--border-strong); color: var(--text); }
 .btn--ghost:hover { background: rgba(248,250,252,0.06); transform: translateY(-3px); }
 
+/* Highlighted "Play the game" button — glowing, attention-grabbing */
+.btn--game {
+  position: relative;
+  color: #05060a;
+  font-weight: 700;
+  background: linear-gradient(110deg, #38e8ff, #b66bff);
+  background-size: 200% 100%;
+  box-shadow: 0 0 0 1px rgba(56,232,255,0.4), 0 10px 34px -10px rgba(56,232,255,0.6);
+  animation: gameGlow 3.2s var(--ease) infinite, gameSheen 5s linear infinite;
+}
+.btn--game:hover { transform: translateY(-3px); }
+.btn--game .btn__ping {
+  width: 0.55em; height: 0.55em; border-radius: 50%;
+  background: #05060a; box-shadow: 0 0 0 0 rgba(5,6,10,0.5);
+  animation: gamePing 1.6s ease-out infinite;
+}
+@keyframes gameGlow {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(56,232,255,0.4), 0 10px 34px -10px rgba(56,232,255,0.55); }
+  50%      { box-shadow: 0 0 0 1px rgba(182,107,255,0.55), 0 14px 46px -8px rgba(182,107,255,0.75); }
+}
+@keyframes gameSheen { to { background-position: -200% 0; } }
+@keyframes gamePing {
+  0%   { box-shadow: 0 0 0 0 rgba(5,6,10,0.5); }
+  70%  { box-shadow: 0 0 0 7px rgba(5,6,10,0); }
+  100% { box-shadow: 0 0 0 0 rgba(5,6,10,0); }
+}
+
 .btn--block { width: 100%; justify-content: center; }
 
 /* ----------------------------------------------------------
