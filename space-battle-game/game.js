@@ -507,13 +507,30 @@
     bindHold(btnFire, () => (game.keys.fire = true), () => (game.keys.fire = false));
   }
 
-  // Mouse steers the ship left/right (desktop). Firing stays on Space.
+  // Mouse steers the ship left/right; clicking (or holding) the mouse fires.
+  // Space still fires too. Touch/pen are ignored here (mobile uses the buttons).
   function bindMouse(game) {
     shell.addEventListener("pointermove", (e) => {
-      if (e.pointerType && e.pointerType !== "mouse") return; // ignore touch/pen
+      if (e.pointerType && e.pointerType !== "mouse") return;
       const rect = shell.getBoundingClientRect();
       game.mouseX = e.clientX - rect.left;
       game.mouseActive = true;
+    });
+
+    shell.addEventListener("pointerdown", (e) => {
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      if (e.button !== 0) return; // left button only
+      Sound.unlock();
+      const rect = shell.getBoundingClientRect();
+      game.mouseX = e.clientX - rect.left;
+      game.mouseActive = true;
+      game.keys.fire = true;
+    });
+
+    // release anywhere stops firing (mouse may leave the shell while held)
+    window.addEventListener("pointerup", (e) => {
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      game.keys.fire = false;
     });
   }
 
